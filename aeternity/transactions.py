@@ -143,7 +143,7 @@ class TxBuilder:
         encoded_signed_tx, encoded_signature = self.encode_signed_transaction(transaction, signature)
         # compute the hash
         tx_hash = TxBuilder.compute_tx_hash(encoded_signed_tx)
-        # return the
+        # return the encode and signed transaction, the encoded signature and the encoded tx hash
         return encoded_signed_tx, encoded_signature, tx_hash
 
     def wait_tx(self, tx_hash, max_retries=config.MAX_RETRIES, polling_interval=config.POLLING_INTERVAL):

@@ -7,7 +7,6 @@ import sys
 from aeternity import __version__
 
 from aeternity.epoch import EpochClient
-# from aeternity.oracle import Oracle, OracleQuery, NoOracleResponse
 from . import utils, signing, aens, config
 from aeternity.contract import Contract
 
