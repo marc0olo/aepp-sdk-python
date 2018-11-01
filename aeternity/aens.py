@@ -15,7 +15,6 @@ class NameStatus:
 
 
 class AEName:
-    Status = NameStatus
 
     def __init__(self, domain, client=None):
         if client is None:
@@ -154,7 +153,7 @@ class AEName:
         if self.client.blocking_mode:
             txb.wait_tx(tx_hash)
         # update local status
-        self.status = AEName.Status.PRECLAIMED
+        self.status = NameStatus.PRECLAIMED
         self.preclaim_tx_hash = tx_hash
         return tx_hash
 
@@ -173,7 +172,7 @@ class AEName:
         if self.client.blocking_mode:
             txb.wait_tx(tx_hash)
         # update status
-        self.status = AEName.Status.CLAIMED
+        self.status = NameStatus.CLAIMED
         return tx_hash
 
     def update(self, account, target,
@@ -208,7 +207,7 @@ class AEName:
     def transfer_ownership(self, account, recipient_pubkey, fee=DEFAULT_FEE, tx_ttl=DEFAULT_TX_TTL):
         """
         transfer ownership of a name
-        :return: the transaction
+        :return: the transaction hash
         """
         # get the name_id and pointers
         name_id = hashing.namehash_encode("nm", self.domain)
