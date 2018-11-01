@@ -7,8 +7,9 @@ import sys
 from aeternity import __version__
 
 from aeternity.epoch import EpochClient
-from . import utils, signing, aens, config
+from . import utils, signing, config
 from aeternity.contract import Contract
+from aeternity.aens import NameStatus
 
 from datetime import datetime, timezone
 
@@ -336,7 +337,7 @@ def name_register(keystore_name, domain, name_ttl, ttl, password, force, wait, j
         account, _ = _account(keystore_name, password=password)
         name = _epoch_cli().AEName(domain)
         name.update_status()
-        if name.status != aens.AEName.Status.AVAILABLE:
+        if name.status != NameStatus.AVAILABLE:
             print("Domain not available")
             exit(0)
         txs = name.full_claim_blocking(account, name_ttl=name_ttl, tx_ttl=ttl)

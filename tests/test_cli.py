@@ -7,7 +7,7 @@ import random
 from tests import NODE_URL, NODE_URL_DEBUG, ACCOUNT, EPOCH_CLI, tempdir, random_domain
 from aeternity.signing import Account
 from aeternity import utils
-from aeternity.aens import AEName
+from aeternity.aens import NameStatus
 
 import pytest
 
@@ -155,4 +155,4 @@ def test_cli_name_claim(account_path):
     print(f"Domain is {domain}")
     # call the cli
     call_aecli('name', 'claim', account_path, domain, '--password', 'aeternity_bc')
-    EPOCH_CLI.AEName(domain).status == AEName.Status.CLAIMED
+    EPOCH_CLI.AEName(domain).status == NameStatus.CLAIMED
