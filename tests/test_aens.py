@@ -1,4 +1,4 @@
-from aeternity.aens import AEName
+from aeternity.aens import AEName, NameStatus
 from tests import EPOCH_CLI, ACCOUNT, random_domain
 
 from pytest import raises
@@ -32,22 +32,22 @@ def test_name_is_available():
 
 def test_name_status_availavle():
     name = EPOCH_CLI.AEName(random_domain())
-    assert name.status == AEName.Status.UNKNOWN
+    assert name.status == NameStatus.UNKNOWN
     name.update_status()
-    assert name.status == AEName.Status.AVAILABLE
+    assert name.status == NameStatus.AVAILABLE
 
 
 def test_name_claim_lifecycle():
     try:
         domain = random_domain()
         name = EPOCH_CLI.AEName(domain)
-        assert name.status == AEName.Status.UNKNOWN
+        assert name.status == NameStatus.UNKNOWN
         name.update_status()
-        assert name.status == AEName.Status.AVAILABLE
+        assert name.status == NameStatus.AVAILABLE
         name.preclaim(ACCOUNT)
-        assert name.status == AEName.Status.PRECLAIMED
+        assert name.status == NameStatus.PRECLAIMED
         name.claim(ACCOUNT)
-        assert name.status == AEName.Status.CLAIMED
+        assert name.status == NameStatus.CLAIMED
     except Exception as e:
         print(e)
         assert e is None
@@ -87,7 +87,7 @@ def test_name_update():
 def test_name_transfer_ownership():
     name = EPOCH_CLI.AEName(random_domain())
     name.full_claim_blocking(ACCOUNT)
-    assert name.status == AEName.Status.CLAIMED
+    assert name.status == NameStatus.CLAIMED
     name.update_status()
     assert name.pointers[0]['id'] == ACCOUNT.get_address()
     assert name.pointers[0]['key'] == "account_pubkey"
@@ -98,7 +98,7 @@ def test_name_transfer_ownership():
     EPOCH_CLI.spend(ACCOUNT, new_key_pair.get_address(), 100)
     # now transfer the name to the other account
     name.transfer_ownership(ACCOUNT, new_key_pair.get_address())
-    assert name.status == AEName.Status.TRANSFERRED
+    assert name.status == NameStatus.TRANSFERRED
     # try changing the target using that new account
     name.update_status()
     name.update(new_key_pair, new_key_pair.get_address())
@@ -122,5 +122,5 @@ def test_name_revocation():
     name = EPOCH_CLI.AEName(domain)
     name.full_claim_blocking(ACCOUNT)
     name.revoke(ACCOUNT)
-    assert name.status == AEName.Status.REVOKED
+    assert name.status == NameStatus.REVOKED
     assert EPOCH_CLI.AEName(domain).is_available()
