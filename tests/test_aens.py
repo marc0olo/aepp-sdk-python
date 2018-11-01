@@ -1,4 +1,4 @@
-from aeternity.aens import AEName, NameStatus
+from aeternity.aens import NameStatus
 from tests import EPOCH_CLI, ACCOUNT, random_domain
 
 from pytest import raises
